@@ -33,6 +33,35 @@ The project will cover:
 #### Prerequisites
 
 1. An active AWS account.
+
+![](pics/aws.png)
+
+
 2. AWS CLI with the IAM user having admin permission or having all the permissions to execute the setup.
+
+![](pics/aws1.png)
+
+
 3. A free [Zebrium](http://www.zebrium.com/sign-up) trial account.
 
+![](pics/zebrium.png)
+
+![](pics/zebrium1.png)
+
+
+
+### Step 1. Create **and configure an EKS cluster**
+
+![](pics/eksctl-create.png)
+
+The cluster.yaml file 
+
+![](pics/eksctl-yaml.png)
+
+
+Navigate the Elastic Kubernetes Service console on AWS and look for the cluster **eks-litmo-demo** that was created.
+
+![](pics/eks-console.png)
+
+
+![](pics/eks-litmo-demo.png)
