@@ -30,9 +30,7 @@ The project will cover:
 - Installing Zebrium log collector
 - Breaking the demo app (using a chaos engineering tool) and verifying that the Zebrium platform automatically finds the root cause.
 
-### Part One:
-
-#### Prerequisites
+### Part One: Prerequisites
 
 **1.** An active AWS account.
 
@@ -40,6 +38,12 @@ The project will cover:
 
 
 **2.** AWS CLI with the IAM user having admin permission or having all the permissions to execute the setup.
+
+- Setup the user with admin permission.
+
+![](pics/aws-user-admin.png)
+
+- Then sign-up with the IAM user creditials that I created.
 
 ![](pics/aws1.png)
 
@@ -52,7 +56,7 @@ The project will cover:
 
 ![](pics/eksctl-create.png)
 
-The cluster.yaml file 
+- The cluster.yaml file 
 
 ![](pics/eksctl-yaml.png)
 
@@ -78,13 +82,34 @@ Here is the link to Zebrium webpage:
 ![](pics/zebrium-signup.png)
 
 
-![](pics/log-collector-setup.png)
+- On the Log Collector Setup page, copy the Helm command from the Zebrium Send Logs page.
 
+**Note:** Do not install the log collector just yet! I will modify it in the upcoming steps.
+
+
+![](pics/log-collector-setup.png)
 
 
 ```
 helm upgrade -i zlog-collector zlog-collector --namespace zebrium --create-namespace --repo https://raw.githubusercontent.com/zebrium/ze-kubernetes-collector/master/charts --set zebrium.collectorUrl=https://cloud-ingest.zebrium.com,zebrium.authToken=XXXX
 ```
+
+- In the Helm command I copied from the Zebrium page, delete the following parts of the line:
+
+```
+zebrium.timezone=KUBERNETES_HOST_TIMEZONE
+
+zebrium.deployment=YOUR_SERVICE_GROUP
+```
+
+Below is an example of the Helm command with the deleted portions (I ensure to substitute XXXX for my actual token):
+
+```
+$ helm upgrade -i zlog-collector zlog-collector --namespace zebrium --create-namespace --repo https://raw.githubusercontent.com/zebrium/ze-kubernetes-collector/master/charts --set zebrium.collectorUrl=https://cloud-ingest.zebrium.com,zebrium.authToken=XXXX
+```
+
+
+
 
 ![](pics/zebrium-1st-log.png)
 
@@ -144,7 +169,6 @@ kubectl get pods -n sock-shop | grep front-end
 
 
 
-
 ### PART THREE: Install the Litmus Chaos Engine
 
 
@@ -190,7 +214,7 @@ date
 
 
 
-### PART 4: Generating Machine-Learning Logs
+### PART FOUR: Generating Machine-Learning Logs
 
 In this section, we will take at least 2 hours for baseline log data collection. The reason for this is because we have just created our new EKS cluster, new app, and new Zebrium account. We must allow the Zebrium ML platform enough time to recognize normal log patterns.
 
@@ -199,7 +223,7 @@ In this section, we will take at least 2 hours for baseline log data collection.
 ![](pics/zebrium-report.png)
 
 
-### PART 5: Break The Sock Shop
+### PART FIVE: Break The Sock Shop
 
 Now that at least 2 hours have reached, the Zebrium ML platform has had enough time to gather a baseline of the logs. I will deliberately disrupt the environment by running a Litmus network corruption chaos experiment.
 
@@ -230,7 +254,7 @@ kubectl get pods -n sock-shop -w
 As soon as the the Chaos experiment has started running, I am able go to back to the Sock Shop UI on your web browser. As I navigate around the website, however I may notice some operations will fail.
 
 
-### PART 6: Results and Interpretation.
+### PART SIX: Results and Interpretation.
 
 As that the chaos experiment is now complete, let's allow some time for the Zebrium ML platform to detect the errors. This may take up to 10 minutes.
 
