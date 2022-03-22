@@ -30,23 +30,21 @@ The project will cover:
 - Installing Zebrium log collector
 - Breaking the demo app (using a chaos engineering tool) and verifying that the Zebrium platform automatically finds the root cause.
 
+### Part One:
+
 #### Prerequisites
 
-1. An active AWS account.
+**1.** An active AWS account.
 
 ![](pics/aws.png)
 
 
-2. AWS CLI with the IAM user having admin permission or having all the permissions to execute the setup.
+**2.** AWS CLI with the IAM user having admin permission or having all the permissions to execute the setup.
 
 ![](pics/aws1.png)
 
 
-3. A free [Zebrium](http://www.zebrium.com/sign-up) trial account.
-
-![](pics/zebrium.png)
-
-![](pics/zebrium1.png)
+**3.** A free [Zebrium](http://www.zebrium.com/sign-up) trial account.
 
 
 
@@ -59,7 +57,7 @@ The cluster.yaml file
 ![](pics/eksctl-yaml.png)
 
 
-Navigate the Elastic Kubernetes Service console on AWS and look for the cluster **eks-litmo-demo** that was created.
+- Navigate the Elastic Kubernetes Service console on AWS and look for the cluster **eks-litmo-demo** that was created.
 
 ![](pics/eks-console.png)
 
@@ -70,10 +68,15 @@ Navigate the Elastic Kubernetes Service console on AWS and look for the cluster 
 
 ### Step 2. Create a Zebrium account and install the log collector
 
+Here is the link to Zebrium webpage:
+[Zebrium](http://www.zebrium.com/sign-up)
+
+
 ![](pics/zebrium.png)
 
 
 ![](pics/zebrium-signup.png)
+
 
 ![](pics/log-collector-setup.png)
 
@@ -85,7 +88,7 @@ helm upgrade -i zlog-collector zlog-collector --namespace zebrium --create-names
 
 ![](pics/zebrium-1st-log.png)
 
-Zebrium is now install.
+**Zebrium is now install.**
 
 After a few minutes, the logs on the Zebrium UI should be viewable as below:
 
@@ -94,8 +97,7 @@ After a few minutes, the logs on the Zebrium UI should be viewable as below:
 ![](pics/zebrium-scan1.png)
 
 
-
-### Install and Fire up the Sock Shop demo app
+### PART TWO: Install and Fire up the Sock Shop demo app
 
 Now that the Kubernetes environment is set up, I will utilize Zebrium's machine learning platform to detect and learn the log patterns.
 
@@ -143,8 +145,7 @@ kubectl get pods -n sock-shop | grep front-end
 
 
 
-
-### PART 3: Install the Litmus Chaos Engine
+### PART THREE: Install the Litmus Chaos Engine
 
 
 In this section, we are going to install and use the Litmus Chaos Engine to deliberately “break” the functionality of the Sock Shop application.
@@ -245,4 +246,29 @@ The reporting page contains a summary list of all the root cause reports found b
 
 Here is a summary of the root cause errors that were generated in my Zebrium account:
 
+![](pics/result-interpret.png)
 
+
+**First error:** Cart Undefined
+
+Everything I am adding a new item to the cart, the cart at first shows **0**, then switch to the correct number of added items. 
+
+
+![](pics/result-undefined.png)
+
+
+
+**Second error:** Catalog page
+
+When I try to request the catalog page, I observe some error tag results.
+
+![](pics/catalog-pg.png)
+
+
+### Conclusion
+
+The process of troubleshooting and tracking down the root cause of an incident in a distributed application is becoming more and more difficult and time-consuming.
+
+For this project, I utilize the principles of Chaos Engineering to deliberately "break" the Sock Shop microservices application. The Zebrium machine learning technology was able to detect this and build a root cause report that detailed the root cause.
+
+This experiment shows how I an use machine learning to automatically find a correlated cluster of anomalies that represents a set of log lines that explains the root cause. The technology is designed to work with any kind of application and does not require manual training or large training data sets.
