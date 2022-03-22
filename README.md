@@ -194,3 +194,13 @@ date
 In this section, we will take at least 2 hours for baseline log data collection. The reason for this is because we have just created our new EKS cluster, new app, and new Zebrium account. We must allow the Zebrium ML platform enough time to recognize normal log patterns.
 
 
+### PART 5: Break The Sock Shop
+
+Now that at least 2 hours have reached, the Zebrium ML platform has had enough time to gather a baseline of the logs. I will deliberately disrupt the environment by running a Litmus network corruption chaos experiment.
+
+- Begin by running the following command to start the network corruption experiment:
+
+
+```
+$ kubectl apply -f https://raw.githubusercontent.com/zebrium/zebrium-sockshop-demo/main/pod-network-corruption-chaos.yaml
+```
