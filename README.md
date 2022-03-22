@@ -50,7 +50,7 @@ The project will cover:
 
 
 
-### Step 1. Create **and configure an EKS cluster**
+### Step 1. Create and configure an EKS cluster
 
 ![](pics/eksctl-create.png)
 
@@ -65,3 +65,84 @@ Navigate the Elastic Kubernetes Service console on AWS and look for the cluster 
 
 
 ![](pics/eks-litmo-demo.png)
+
+
+
+### Step 2. Create a Zebrium account and install the log collector
+
+![](pics/zebrium.png)
+
+
+![](pics/zebrium-signup.png)
+
+![](pics/log-collector-setup.png)
+
+
+
+```
+$ helm upgrade -i zlog-collector zlog-collector --namespace zebrium --create-namespace --repo https://raw.githubusercontent.com/zebrium/ze-kubernetes-collector/master/charts --set zebrium.collectorUrl=https://cloud-ingest.zebrium.com,zebrium.authToken=XXXX
+```
+
+![](pics/zebrium-1st-log.png)
+
+Zebrium is now install.
+
+After a few minutes, the logs on the Zebrium UI should be viewable as below:
+
+![](pics/zebrium-scan.png)
+
+![](pics/zebrium-scan1.png)
+
+
+
+### Install and Fire up the Sock Shop demo app
+
+Now that the Kubernetes environment is set up, I will utilize Zebrium's machine learning platform to detect and learn the log patterns.
+
+The demo microservices app that I will use is called [Sock Shop](https://microservices-demo.github.io/). It is a demo app that simulates the key components of the user-facing part of an e-commerce website. It is built using components such as Spring Boot, Go kit, and Node.js. It is also packaged in Docker containers.
+
+- To begin, install Sock Shop from a .yaml file using the following command:
+
+```
+$ kubectl create -f https://raw.githubusercontent.com/zebrium/zebrium-sockshop-demo/main/sock-shop-litmus-chaos.yaml
+```
+
+**NOTE:** Please be patient as the pods are being created. DO NOT move on to the next step until all pods are in a Running state.
+
+- To check the status of the pods, type the following command:
+
+```
+$ kubectl get pods -n sock-shop
+```
+
+
+
+
+
+
+
+
+### PART 3: Install the Litmus Chaos Engine
+
+
+In this section, we are going to install and use the Litmus Chaos Engine to deliberately “break” the functionality of the Sock Shop application.
+
+- Begin by installing the Litmus Chaos components as well as create an appropriate role-based access control (RBAC) for the pod-network-corruption test:
+
+```
+$ helm repo add litmuschaos https://litmuschaos.github.io/litmus-helm/
+
+$ helm upgrade -i litmus litmuschaos/litmus-core -n litmus --create-namespace
+
+```
+
+
+
+
+
+
+### PART 4: Generating Machine-Learning Logs
+
+In this section, we will take at least 2 hours for baseline log data collection. The reason for this is because we have just created our new EKS cluster, new app, and new Zebrium account. We must allow the Zebrium ML platform enough time to recognize normal log patterns.
+
+
