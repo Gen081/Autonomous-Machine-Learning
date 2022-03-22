@@ -222,7 +222,7 @@ date
 
 ### PART FOUR: Generating Machine-Learning Logs
 
-In this section, we will take at least 2 hours for baseline log data collection. The reason for this is because we have just created our new EKS cluster, new app, and new Zebrium account. We must allow the Zebrium ML platform enough time to recognize normal log patterns.
+This section will take at least 2 hours for baseline log data collection. The reason for this is because I have just created a new EKS cluster, new app, and new Zebrium account.  It is very important to allow the Zebrium ML platform enough time to recognize normal log patterns.
 
 **The waiting time may varied from a 10 minutes to 2 hours.** It is all depends how deep is the issue.
 
@@ -231,7 +231,7 @@ In this section, we will take at least 2 hours for baseline log data collection.
 
 ### PART FIVE: Break The Sock Shop
 
-Now that at least 2 hours have reached, the Zebrium ML platform has had enough time to gather a baseline of the logs. I will deliberately disrupt the environment by running a Litmus network corruption chaos experiment.
+Now that at least the time has reached,the Zebrium ML platform has had enough time to gather a baseline of the logs. I will deliberately disrupt the environment by running a Litmus network corruption chaos experiment.
 
 - Begin by running the following commands to start the network corruption experiment:
 
@@ -239,6 +239,8 @@ Now that at least 2 hours have reached, the Zebrium ML platform has had enough t
 ```
 kubectl apply -f https://raw.githubusercontent.com/zebrium/zebrium-sockshop-demo/main/pod-network-corruption-chaos.yaml
 ```
+
+- Be sure to make note of the date:
 
 ```
 date
@@ -256,8 +258,7 @@ kubectl get pods -n sock-shop -w
 
 
 
-
-As soon as the the Chaos experiment has started running, I am able go to back to the Sock Shop UI on your web browser. As I navigate around the website, however I may notice some operations will fail.
+As soon as the the Chaos experiment has started running, I was able to go back to the Sock Shop UI of my web browser. As I navigate around the website, however I may notice some operations have slightly failed.
 
 
 ### PART SIX: Results and Interpretation.
@@ -283,7 +284,7 @@ Here is a summary of the root cause errors that were generated in my Zebrium acc
 ![](pics/result-interpret.png)
 
 
-**First error:** Cart Undefined
+**First error:** Cart Undefined.
 
 Everything I am adding a new item to the cart, the cart at first shows **0**, then switch to the correct number of added items. 
 
@@ -292,7 +293,7 @@ Everything I am adding a new item to the cart, the cart at first shows **0**, th
 
 
 
-**Second error:** Catalog page
+**Second error:** Catalog page error.
 
 When I try to request the catalog page, I observe some error tag results.
 
