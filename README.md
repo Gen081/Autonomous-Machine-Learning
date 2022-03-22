@@ -198,9 +198,51 @@ In this section, we will take at least 2 hours for baseline log data collection.
 
 Now that at least 2 hours have reached, the Zebrium ML platform has had enough time to gather a baseline of the logs. I will deliberately disrupt the environment by running a Litmus network corruption chaos experiment.
 
-- Begin by running the following command to start the network corruption experiment:
+- Begin by running the following commands to start the network corruption experiment:
 
 
 ```
-$ kubectl apply -f https://raw.githubusercontent.com/zebrium/zebrium-sockshop-demo/main/pod-network-corruption-chaos.yaml
+kubectl apply -f https://raw.githubusercontent.com/zebrium/zebrium-sockshop-demo/main/pod-network-corruption-chaos.yaml
 ```
+
+```
+date
+```
+
+- It will take a moment for the pod-network-corruption-helper to reach a Running state. Check the status of it by using the following command:
+
+```
+kubectl get pods -n sock-shop -w
+```
+**Note:** In order to stop the kubectl command
+ Type ^C 
+
+ ![](pics/kubectl-stop.png)
+
+
+
+
+As soon as the the Chaos experiment has started running, I am able go to back to the Sock Shop UI on your web browser. As I navigate around the website, however I may notice some operations will fail.
+
+
+### PART 6: Results and Interpretation
+
+As that the chaos experiment is now complete, let's allow some time for the Zebrium ML platform to detect the errors. This may take up to 10 minutes.
+
+Manually I refresh my web browser window a couple of times, the actual root cause reports were different across runs. 
+
+This is because of many factors, including the learning period, what events occurred while learning, the timing and order of the log lines while the experiment was running, other things happening on the system, and so on.
+
+The reporting page contains a summary list of all the root cause reports found by the machine learning. There are three useful parts of the summary:
+
+**1. Plain language NLP summary:** This is an experimental feature where we use the GPT-3 language model to construct a summary of the report. The summary provides some useful context about the problem.
+
+**2. Log type(s) and host(s):** The log type and host (front end, events, orders, and messages) that contain the events for the incident.
+
+
+**3. “Hallmark” events:** The ML picks out one or two events that it believes will define the problem.
+
+
+Here is a summary of the root cause errors that were generated in my Zebrium account:
+
+
