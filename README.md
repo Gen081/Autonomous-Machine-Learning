@@ -80,7 +80,7 @@ Navigate the Elastic Kubernetes Service console on AWS and look for the cluster 
 
 
 ```
-$ helm upgrade -i zlog-collector zlog-collector --namespace zebrium --create-namespace --repo https://raw.githubusercontent.com/zebrium/ze-kubernetes-collector/master/charts --set zebrium.collectorUrl=https://cloud-ingest.zebrium.com,zebrium.authToken=XXXX
+helm upgrade -i zlog-collector zlog-collector --namespace zebrium --create-namespace --repo https://raw.githubusercontent.com/zebrium/ze-kubernetes-collector/master/charts --set zebrium.collectorUrl=https://cloud-ingest.zebrium.com,zebrium.authToken=XXXX
 ```
 
 ![](pics/zebrium-1st-log.png)
@@ -104,7 +104,7 @@ The demo microservices app that I will use is called [Sock Shop](https://microse
 - To begin, install Sock Shop from a .yaml file using the following command:
 
 ```
-$ kubectl create -f https://raw.githubusercontent.com/zebrium/zebrium-sockshop-demo/main/sock-shop-litmus-chaos.yaml
+kubectl create -f https://raw.githubusercontent.com/zebrium/zebrium-sockshop-demo/main/sock-shop-litmus-chaos.yaml
 ```
 
 **NOTE:** Please be patient as the pods are being created. DO NOT move on to the next step until all pods are in a Running state.
@@ -112,11 +112,33 @@ $ kubectl create -f https://raw.githubusercontent.com/zebrium/zebrium-sockshop-d
 - To check the status of the pods, type the following command:
 
 ```
-$ kubectl get pods -n sock-shop
+kubectl get pods -n sock-shop
 ```
 
+![](pics/sock-shop-pods.png)
 
 
+Once all the services are running, I can visit the app on my web browser! However, in order to achieve this, I must set up port forwarding, then get the front-end IP address and port as follow:
+
+- Run the command below in a separate shell window:
+
+```
+kubectl get pods -n sock-shop | grep front-end
+```
+
+![](pics/sock-shop-pods1.png)
+
+
+- Next, use pod name from the above command in place of XXX’s
+
+![](pics/kubectl-portfwrd.png)
+
+
+- Let's open the ip_address:port from above (in this case: 127.0.0.1:8079) in a new tab on a web browser! I can now interact with the Sock Shop app. Navigate the website and verify that it is working correctly.
+
+![](pics/sock-shop.png)
+
+![](pics/sock-shop1.png)
 
 
 
@@ -130,14 +152,40 @@ In this section, we are going to install and use the Litmus Chaos Engine to deli
 - Begin by installing the Litmus Chaos components as well as create an appropriate role-based access control (RBAC) for the pod-network-corruption test:
 
 ```
-$ helm repo add litmuschaos https://litmuschaos.github.io/litmus-helm/
-
-$ helm upgrade -i litmus litmuschaos/litmus-core -n litmus --create-namespace
-
+helm repo add litmuschaos https://litmuschaos.github.io/litmus-helm/
 ```
 
+```
+helm upgrade -i litmus litmuschaos/litmus-core -n litmus --create-namespace
+```
+
+![](pics/litmus-chaos-socks.png)
 
 
+- Continue the instillation by typing this command:
+
+```
+kubectl apply -f "https://hub.litmuschaos.io/api/chaos/1.13.6?file=charts/generic/experiments.yaml" -n sock-shop
+```
+
+![](pics/litmus-chaos-socks1.png)
+
+
+- Next, I setup a service account with the appropriate RBAC to run the network corruption experiment using the following command:
+
+```
+$ kubectl apply -f https://raw.githubusercontent.com/zebrium/zebrium-sockshop-demo/main/pod-network-corruption-rbac.yaml
+```
+
+- Lastly, make note of the time using the following command:
+
+```
+date
+```
+
+![](pics/litmus-chaos-socks2.png)
+
+![](pics/litmus-chaos-socks3.png)
 
 
 
