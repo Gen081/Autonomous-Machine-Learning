@@ -194,6 +194,10 @@ date
 
 In this section, we will take at least 2 hours for baseline log data collection. The reason for this is because we have just created our new EKS cluster, new app, and new Zebrium account. We must allow the Zebrium ML platform enough time to recognize normal log patterns.
 
+**The waiting time may varied from a 10 minutes to 2 hours.** It is all depends how deep is the issue.
+
+![](pics/zebrium-report.png)
+
 
 ### PART 5: Break The Sock Shop
 
@@ -226,7 +230,7 @@ kubectl get pods -n sock-shop -w
 As soon as the the Chaos experiment has started running, I am able go to back to the Sock Shop UI on your web browser. As I navigate around the website, however I may notice some operations will fail.
 
 
-### PART 6: Results and Interpretation
+### PART 6: Results and Interpretation.
 
 As that the chaos experiment is now complete, let's allow some time for the Zebrium ML platform to detect the errors. This may take up to 10 minutes.
 
