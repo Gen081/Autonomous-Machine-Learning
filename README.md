@@ -110,14 +110,20 @@ $ helm upgrade -i zlog-collector zlog-collector --namespace zebrium --create-nam
 
 
 
+After I run the Helm command in Terminal, the Zebrium UI should detect that logs have been received. The Zebrium pop-up will look something like this:
+
 
 ![](pics/zebrium-1st-log.png)
 
+
 **Zebrium is now install.**
 
-After a few minutes, the logs on the Zebrium UI should be viewable as below:
+
+After a few minutes, the logs should be viewable on Zebrium web UI.
+
 
 ![](pics/zebrium-scan.png)
+
 
 ![](pics/zebrium-scan1.png)
 
@@ -134,7 +140,7 @@ The demo microservices app that I will use is called [Sock Shop](https://microse
 kubectl create -f https://raw.githubusercontent.com/zebrium/zebrium-sockshop-demo/main/sock-shop-litmus-chaos.yaml
 ```
 
-**NOTE:** Please be patient as the pods are being created. DO NOT move on to the next step until all pods are in a Running state.
+**NOTE:** Please be patient as the pods are being created. **DO NOT** move on to the next step until all pods are no longer in a Running state.
 
 - To check the status of the pods, type the following command:
 
@@ -145,7 +151,7 @@ kubectl get pods -n sock-shop
 ![](pics/sock-shop-pods.png)
 
 
-Once all the services are running, I can visit the app on my web browser! However, in order to achieve this, I must set up port forwarding, then get the front-end IP address and port as follow:
+Once all the services are running, I can open the app on my web browser! However, in order to achieve this, I must set up port forwarding, then get the front-end IP address and port as follow:
 
 - Run the command below in a separate shell window:
 
@@ -172,7 +178,7 @@ kubectl get pods -n sock-shop | grep front-end
 ### PART THREE: Install the Litmus Chaos Engine
 
 
-In this section, we are going to install and use the Litmus Chaos Engine to deliberately “break” the functionality of the Sock Shop application.
+In this section, I install and use the Litmus Chaos Engine to deliberately “break” the functionality of the Sock Shop application.
 
 - Begin by installing the Litmus Chaos components as well as create an appropriate role-based access control (RBAC) for the pod-network-corruption test:
 
@@ -187,7 +193,7 @@ helm upgrade -i litmus litmuschaos/litmus-core -n litmus --create-namespace
 ![](pics/litmus-chaos-socks.png)
 
 
-- Continue the instillation by typing this command:
+- Continue the installation by typing this command:
 
 ```
 kubectl apply -f "https://hub.litmuschaos.io/api/chaos/1.13.6?file=charts/generic/experiments.yaml" -n sock-shop
